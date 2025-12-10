@@ -73,7 +73,7 @@
                     {% endfor %}
                 </ul>
                 {% else %}
-                <p class="text-muted text-center py-3">Nenhum projeto cadastrado.</p>
+                <p class="text-center py-3">Nenhum projeto cadastrado.</p>
                 {% endif %}
             </div>
         </div>
@@ -90,13 +90,13 @@
                     {% for mensagem in mensagens_recentes %}
                     <li class="list-group-item">
                         <strong>{{ mensagem.nome }}</strong>
-                        <small class="text-muted d-block">{{ mensagem.email }}</small>
+                        <small class="d-block">{{ mensagem.email }}</small>
                         <p class="mb-0 mt-1 text-truncate">{{ mensagem.mensagem|truncatewords:10 }}</p>
                     </li>
                     {% endfor %}
                 </ul>
                 {% else %}
-                <p class="text-muted text-center py-3">Nenhuma mensagem nova.</p>
+                <p class="text-center py-3">Nenhuma mensagem nova.</p>
                 {% endif %}
             </div>
         </div>

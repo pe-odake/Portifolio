@@ -16,10 +16,10 @@
                 <div class="message-header">
                     <div class="message-sender">
                         <strong>{{ mensagem.nome }}</strong>
-                        <span class="text-muted">{{ mensagem.email }}</span>
+                        <span>{{ mensagem.email }}</span>
                     </div>
                     <div class="message-actions">
-                        <small class="text-muted me-3">{{ mensagem.criado_em|date:"d/m/Y H:i" }}</small>
+                        <small class="me-3">{{ mensagem.criado_em|date:"d/m/Y H:i" }}</small>
                         <a href="{% url 'admin_mensagem_excluir' mensagem.pk %}" class="btn btn-sm btn-outline-danger">
                             <i class="fas fa-trash"></i>
                         </a>

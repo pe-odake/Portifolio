@@ -517,3 +517,69 @@ body {
         padding: 40px 0;
     }
 }
+
+/* --- RESPONSIVIDADE PARA CERTIFICADOS E CURSOS --- */
+@media (max-width: 768px) {
+
+    /* Cada item vira bloco vertical */
+    .course-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 16px 0;
+    }
+
+    /* Nome e plataforma do curso ocupam toda a largura */
+    .course-info h4 {
+        font-size: 1rem;
+    }
+
+    .course-info p {
+        font-size: 0.85rem;
+    }
+
+    /* Ano do curso abaixo e alinhado à esquerda */
+    .course-year {
+        align-self: flex-start;
+        font-size: 0.9rem;
+        margin-top: 4px;
+    }
+
+    /* Área de ações do certificado */
+    .course-actions {
+        flex-direction: row;
+        flex-wrap: wrap;
+        width: 100%;
+        gap: 6px;
+        margin-top: 10px;
+    }
+
+    /* Imagem do certificado menor e mais responsiva */
+    .certificate-thumb {
+        width: 60px;
+        margin-left: 0;
+        margin-top: 8px;
+        border-radius: 4px;
+    }
+}
+
+/* Ajustes para telas bem pequenas */
+@media (max-width: 480px) {
+
+    .course-item {
+        gap: 12px;
+        padding: 14px 0;
+    }
+
+    .certificate-thumb {
+        width: 50px;
+    }
+
+    .course-info h4 {
+        font-size: 0.95rem;
+    }
+
+    .course-info p {
+        font-size: 0.8rem;
+    }
+}

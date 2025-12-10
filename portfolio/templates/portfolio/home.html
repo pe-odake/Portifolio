@@ -52,7 +52,8 @@
 
 <section class="courses-section" id="formacao">
     <div class="container">
-        <h2 class="section-title" data-aos="fade-up">Formacao e Certificados</h2>
+        <h2 class="section-title" data-aos="fade-up">Formação</h2>
+
         <div class="courses-list" data-aos="fade-up" data-aos-delay="100">
             {% for curso in cursos %}
             <div class="course-item">
@@ -63,11 +64,48 @@
                 <span class="course-year">{{ curso.ano }}</span>
             </div>
             {% empty %}
-            <p class="text-muted text-center">Nenhum curso cadastrado ainda.</p>
+            <p class="text-muted text-center">Nenhuma formação cadastrada ainda.</p>
             {% endfor %}
         </div>
+
+        <hr class="my-4">
+
+        <h2 class="section-title" data-aos="fade-up">Certificados</h2>
+
+        <div class="courses-list" data-aos="fade-up" data-aos-delay="200">
+            {% for cert in certificados %}
+            <div class="course-item">
+                <div class="course-info">
+                    <h4>{{ cert.nome }}</h4>
+                    <p>Emitido por: {{ cert.emissor }}</p>
+
+                    {% if cert.data_emissao %}
+                    <small class="text-muted">Emitido em: {{ cert.data_emissao }}</small>
+                    {% endif %}
+                </div>
+
+                <div class="course-actions">
+                    {% if cert.imagem %}
+                        <a href="{{ cert.imagem.url }}" target="_blank">
+                            <img src="{{ cert.imagem.url }}" alt="{{ cert.nome }}" class="certificate-thumb">
+                        </a>
+                    {% endif %}
+
+                    {% if cert.arquivo_pdf %}
+                        <a href="{{ cert.arquivo_pdf.url }}" class="btn btn-primary btn-sm" target="_blank">
+                            Ver PDF
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+            {% empty %}
+            <p class="text-muted text-center">Nenhum certificado cadastrado ainda.</p>
+            {% endfor %}
+        </div>
+
     </div>
 </section>
+
 
 <section class="contact-section" id="contato">
     <div class="container">
@@ -106,7 +144,7 @@
                         </a>
                         {% endif %}
                         {% if perfil and perfil.email %}
-                        <a href="mailto:{{ perfil.email }}" class="social-btn email">
+                        <a href="https://mail.google.com/mail/?view=cm&fs=1&to={{ perfil.email }}" class="social-btn email">
                             <i class="fas fa-envelope"></i> Gmail
                         </a>
                         {% endif %}
