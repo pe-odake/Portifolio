@@ -1,0 +1,139 @@
+{% extends 'admin_panel/base.html' %}
+
+{% block title %}Dashboard - Painel{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+
+{% block admin_content %}
+<div class="dashboard-stats">
+    <div class="row g-4">
+        <div class="col-md-6 col-xl-3">
+            <div class="stat-card">
+                <div class="stat-icon bg-primary">
+                    <i class="fas fa-folder-open"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>{{ total_projetos }}</h3>
+                    <p>Projetos</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-3">
+            <div class="stat-card">
+                <div class="stat-icon bg-success">
+                    <i class="fas fa-tools"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>{{ total_skills }}</h3>
+                    <p>Habilidades</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-3">
+            <div class="stat-card">
+                <div class="stat-icon bg-warning">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>{{ total_cursos }}</h3>
+                    <p>Cursos</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-3">
+            <div class="stat-card">
+                <div class="stat-icon bg-info">
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>{{ total_mensagens }}</h3>
+                    <p>Mensagens Novas</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-lg-6">
+        <div class="admin-card">
+            <div class="card-header">
+                <h5><i class="fas fa-folder-open"></i> Projetos Recentes</h5>
+                <a href="{% url 'admin_projeto_criar' %}" class="btn btn-sm btn-primary">+ Novo</a>
+            </div>
+            <div class="card-body">
+                {% if projetos_recentes %}
+                <ul class="list-group list-group-flush">
+                    {% for projeto in projetos_recentes %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span>{{ projeto.titulo }}</span>
+                        <a href="{% url 'admin_projeto_editar' projeto.pk %}" class="btn btn-sm btn-outline-primary">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <p class="text-muted text-center py-3">Nenhum projeto cadastrado.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="admin-card">
+            <div class="card-header">
+                <h5><i class="fas fa-envelope"></i> Mensagens Recentes</h5>
+                <a href="{% url 'admin_mensagens' %}" class="btn btn-sm btn-primary">Ver Todas</a>
+            </div>
+            <div class="card-body">
+                {% if mensagens_recentes %}
+                <ul class="list-group list-group-flush">
+                    {% for mensagem in mensagens_recentes %}
+                    <li class="list-group-item">
+                        <strong>{{ mensagem.nome }}</strong>
+                        <small class="text-muted d-block">{{ mensagem.email }}</small>
+                        <p class="mb-0 mt-1 text-truncate">{{ mensagem.mensagem|truncatewords:10 }}</p>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <p class="text-muted text-center py-3">Nenhuma mensagem nova.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="admin-card">
+            <div class="card-header">
+                <h5><i class="fas fa-rocket"></i> Acoes Rapidas</h5>
+            </div>
+            <div class="card-body">
+                <div class="quick-actions">
+                    <a href="{% url 'admin_projeto_criar' %}" class="quick-action-btn">
+                        <i class="fas fa-plus"></i>
+                        <span>Novo Projeto</span>
+                    </a>
+                    <a href="{% url 'admin_skill_criar' %}" class="quick-action-btn">
+                        <i class="fas fa-plus"></i>
+                        <span>Nova Skill</span>
+                    </a>
+                    <a href="{% url 'admin_curso_criar' %}" class="quick-action-btn">
+                        <i class="fas fa-plus"></i>
+                        <span>Novo Curso</span>
+                    </a>
+                    <a href="{% url 'admin_certificado_criar' %}" class="quick-action-btn">
+                        <i class="fas fa-plus"></i>
+                        <span>Novo Certificado</span>
+                    </a>
+                    <a href="{% url 'admin_perfil' %}" class="quick-action-btn">
+                        <i class="fas fa-user-edit"></i>
+                        <span>Editar Perfil</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

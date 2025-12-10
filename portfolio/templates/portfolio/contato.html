@@ -1,0 +1,70 @@
+{% extends 'portfolio/base.html' %}
+{% load static %}
+
+{% block title %}Contato - Portfolio{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <h1>Entre em Contato</h1>
+        <p>Ficarei feliz em ouvir voce</p>
+    </div>
+</section>
+
+<section class="contact-page">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+                {% endfor %}
+                {% endif %}
+                
+                <div class="contact-card">
+                    <form method="post" class="contact-form">
+                        {% csrf_token %}
+                        <div class="mb-4">
+                            <label class="form-label">Nome</label>
+                            {{ form.nome }}
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label">Email</label>
+                            {{ form.email }}
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label">Mensagem</label>
+                            {{ form.mensagem }}
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-lg w-100">Enviar Mensagem</button>
+                    </form>
+                </div>
+                
+                <div class="contact-info-card mt-4">
+                    <h4>Outras formas de contato</h4>
+                    <div class="social-links-grid">
+                        {% if perfil and perfil.linkedin %}
+                        <a href="{{ perfil.linkedin }}" target="_blank" class="social-btn linkedin">
+                            <i class="fab fa-linkedin"></i> LinkedIn
+                        </a>
+                        {% endif %}
+                        {% if perfil and perfil.github %}
+                        <a href="{{ perfil.github }}" target="_blank" class="social-btn github">
+                            <i class="fab fa-github"></i> GitHub
+                        </a>
+                        {% endif %}
+                        {% if perfil and perfil.email %}
+                        <a href="mailto:{{ perfil.email }}" class="social-btn email">
+                            <i class="fas fa-envelope"></i> {{ perfil.email }}
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

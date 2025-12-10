@@ -1,0 +1,68 @@
+{% extends 'admin_panel/base.html' %}
+
+{% block title %}Projetos - Painel{% endblock %}
+{% block page_title %}Meus Projetos{% endblock %}
+
+{% block admin_content %}
+<div class="admin-card">
+    <div class="card-header">
+        <h5><i class="fas fa-folder-open"></i> Lista de Projetos</h5>
+        <a href="{% url 'admin_projeto_criar' %}" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Novo Projeto
+        </a>
+    </div>
+    <div class="card-body">
+        {% if projetos %}
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Imagem</th>
+                        <th>Titulo</th>
+                        <th>Destaque</th>
+                        <th>Data</th>
+                        <th>Acoes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for projeto in projetos %}
+                    <tr>
+                        <td>
+                            {% if projeto.imagem %}
+                            <img src="{{ projeto.imagem.url }}" alt="{{ projeto.titulo }}" class="table-img">
+                            {% else %}
+                            <div class="table-img-placeholder"><i class="fas fa-image"></i></div>
+                            {% endif %}
+                        </td>
+                        <td>{{ projeto.titulo }}</td>
+                        <td>
+                            {% if projeto.destaque %}
+                            <span class="badge bg-success">Sim</span>
+                            {% else %}
+                            <span class="badge bg-secondary">Nao</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ projeto.criado_em|date:"d/m/Y" }}</td>
+                        <td>
+                            <a href="{% url 'admin_projeto_editar' projeto.pk %}" class="btn btn-sm btn-outline-primary">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <a href="{% url 'admin_projeto_excluir' projeto.pk %}" class="btn btn-sm btn-outline-danger">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <i class="fas fa-folder-open"></i>
+            <h4>Nenhum projeto cadastrado</h4>
+            <p>Clique no botao acima para adicionar seu primeiro projeto.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

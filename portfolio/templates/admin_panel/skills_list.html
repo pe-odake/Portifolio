@@ -1,0 +1,56 @@
+{% extends 'admin_panel/base.html' %}
+
+{% block title %}Habilidades - Painel{% endblock %}
+{% block page_title %}Minhas Habilidades{% endblock %}
+
+{% block admin_content %}
+<div class="admin-card">
+    <div class="card-header">
+        <h5><i class="fas fa-tools"></i> Lista de Habilidades</h5>
+        <a href="{% url 'admin_skill_criar' %}" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Nova Habilidade
+        </a>
+    </div>
+    <div class="card-body">
+        {% if skills %}
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Categoria</th>
+                        <th>Nivel</th>
+                        <th>Ordem</th>
+                        <th>Acoes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for skill in skills %}
+                    <tr>
+                        <td>{{ skill.nome }}</td>
+                        <td><span class="badge bg-info">{{ skill.categoria }}</span></td>
+                        <td>{{ skill.get_nivel_display }}</td>
+                        <td>{{ skill.ordem }}</td>
+                        <td>
+                            <a href="{% url 'admin_skill_editar' skill.pk %}" class="btn btn-sm btn-outline-primary">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <a href="{% url 'admin_skill_excluir' skill.pk %}" class="btn btn-sm btn-outline-danger">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <i class="fas fa-tools"></i>
+            <h4>Nenhuma habilidade cadastrada</h4>
+            <p>Clique no botao acima para adicionar suas habilidades.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

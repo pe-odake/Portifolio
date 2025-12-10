@@ -1,0 +1,62 @@
+{% extends 'admin_panel/base.html' %}
+
+{% block title %}Certificados - Painel{% endblock %}
+{% block page_title %}Meus Certificados{% endblock %}
+
+{% block admin_content %}
+<div class="admin-card">
+    <div class="card-header">
+        <h5><i class="fas fa-certificate"></i> Lista de Certificados</h5>
+        <a href="{% url 'admin_certificado_criar' %}" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Novo Certificado
+        </a>
+    </div>
+    <div class="card-body">
+        {% if certificados %}
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Imagem</th>
+                        <th>Nome</th>
+                        <th>Emissor</th>
+                        <th>Data</th>
+                        <th>Acoes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for certificado in certificados %}
+                    <tr>
+                        <td>
+                            {% if certificado.imagem %}
+                            <img src="{{ certificado.imagem.url }}" alt="{{ certificado.nome }}" class="table-img">
+                            {% else %}
+                            <div class="table-img-placeholder"><i class="fas fa-certificate"></i></div>
+                            {% endif %}
+                        </td>
+                        <td>{{ certificado.nome }}</td>
+                        <td>{{ certificado.emissor }}</td>
+                        <td>{% if certificado.data_emissao %}{{ certificado.data_emissao|date:"d/m/Y" }}{% else %}-{% endif %}</td>
+                        <td>
+                            <a href="{% url 'admin_certificado_editar' certificado.pk %}" class="btn btn-sm btn-outline-primary">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <a href="{% url 'admin_certificado_excluir' certificado.pk %}" class="btn btn-sm btn-outline-danger">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <i class="fas fa-certificate"></i>
+            <h4>Nenhum certificado cadastrado</h4>
+            <p>Clique no botao acima para adicionar seus certificados.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends 'portfolio/base.html' %}
+{% load static %}
+
+{% block title %}Projetos - Portfolio{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <h1>Meus Projetos</h1>
+        <p>Confira alguns dos projetos que desenvolvi</p>
+    </div>
+</section>
+
+<section class="projects-page">
+    <div class="container">
+        <div class="row g-4">
+            {% for projeto in projetos %}
+            <div class="col-lg-4 col-md-6">
+                <div class="project-card">
+                    {% if projeto.imagem %}
+                    <div class="project-image">
+                        <img src="{{ projeto.imagem.url }}" alt="{{ projeto.titulo }}">
+                    </div>
+                    {% else %}
+                    <div class="project-image placeholder-img">
+                        <i class="fas fa-folder-open"></i>
+                    </div>
+                    {% endif %}
+                    <div class="project-content">
+                        <h4>{{ projeto.titulo }}</h4>
+                        <p>{{ projeto.descricao|truncatewords:20 }}</p>
+                        <div class="project-links">
+                            <a href="{{ projeto.link_repositorio }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                                <i class="fab fa-github"></i> GitHub
+                            </a>
+                            {% if projeto.link_deploy %}
+                            <a href="{{ projeto.link_deploy }}" target="_blank" class="btn btn-sm btn-primary">
+                                <i class="fas fa-external-link-alt"></i> Demo
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12">
+                <div class="empty-state">
+                    <i class="fas fa-folder-open"></i>
+                    <h3>Nenhum projeto cadastrado</h3>
+                    <p>Os projetos aparecerao aqui quando forem adicionados.</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

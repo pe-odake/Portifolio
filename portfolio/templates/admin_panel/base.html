@@ -1,0 +1,78 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Painel Administrativo{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="{% static 'portfolio/css/admin.css' %}" rel="stylesheet">
+</head>
+<body>
+    <div class="admin-wrapper">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h4><i class="fas fa-code"></i> Portfolio</h4>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="{% url 'dashboard' %}" class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
+                    <i class="fas fa-home"></i> Dashboard
+                </a>
+                <a href="{% url 'admin_projetos' %}" class="nav-link {% if 'projeto' in request.resolver_match.url_name %}active{% endif %}">
+                    <i class="fas fa-folder-open"></i> Meus Projetos
+                </a>
+                <a href="{% url 'admin_skills' %}" class="nav-link {% if 'skill' in request.resolver_match.url_name %}active{% endif %}">
+                    <i class="fas fa-tools"></i> Skills
+                </a>
+                <a href="{% url 'admin_cursos' %}" class="nav-link {% if 'curso' in request.resolver_match.url_name %}active{% endif %}">
+                    <i class="fas fa-graduation-cap"></i> Cursos
+                </a>
+                <a href="{% url 'admin_certificados' %}" class="nav-link {% if 'certificado' in request.resolver_match.url_name %}active{% endif %}">
+                    <i class="fas fa-certificate"></i> Certificados
+                </a>
+                <a href="{% url 'admin_perfil' %}" class="nav-link {% if 'perfil' in request.resolver_match.url_name %}active{% endif %}">
+                    <i class="fas fa-user"></i> Sobre Mim
+                </a>
+                <a href="{% url 'admin_mensagens' %}" class="nav-link {% if 'mensagen' in request.resolver_match.url_name %}active{% endif %}">
+                    <i class="fas fa-envelope"></i> Mensagens
+                </a>
+                <hr>
+                <a href="{% url 'home' %}" class="nav-link" target="_blank">
+                    <i class="fas fa-external-link-alt"></i> Ver Site
+                </a>
+                <a href="{% url 'logout' %}" class="nav-link text-danger">
+                    <i class="fas fa-sign-out-alt"></i> Sair
+                </a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="admin-header">
+                <h1>{% block page_title %}Dashboard{% endblock %}</h1>
+                <div class="user-info">
+                    <span><i class="fas fa-user-circle"></i> {{ user.username }}</span>
+                </div>
+            </header>
+
+            {% if messages %}
+            <div class="container-fluid mt-3">
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <div class="content-wrapper">
+                {% block admin_content %}{% endblock %}
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

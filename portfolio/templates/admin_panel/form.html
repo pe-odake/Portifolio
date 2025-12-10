@@ -1,0 +1,37 @@
+{% extends 'admin_panel/base.html' %}
+
+{% block title %}{{ titulo }} - Painel{% endblock %}
+{% block page_title %}{{ titulo }}{% endblock %}
+
+{% block admin_content %}
+<div class="admin-card">
+    <div class="card-header">
+        <h5><i class="fas fa-edit"></i> {{ titulo }}</h5>
+        <a href="{% url voltar_url %}" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left"></i> Voltar
+        </a>
+    </div>
+    <div class="card-body">
+        <form method="post" enctype="multipart/form-data" class="admin-form">
+            {% csrf_token %}
+            {% for field in form %}
+            <div class="mb-3">
+                <label class="form-label">{{ field.label }}</label>
+                {{ field }}
+                {% if field.errors %}
+                <div class="invalid-feedback d-block">
+                    {% for error in field.errors %}{{ error }}{% endfor %}
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Salvar
+                </button>
+                <a href="{% url voltar_url %}" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
