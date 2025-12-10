@@ -40,61 +40,92 @@
 <section class="skills-section" id="habilidades">
     <div class="container">
         <h2 class="section-title" data-aos="fade-up">Habilidades</h2>
-        <div class="skills-container" data-aos="fade-up" data-aos-delay="100">
-            {% for skill in skills %}
-            <span class="skill-chip">{{ skill.nome }}</span>
-            {% empty %}
-            <p class="text-muted">Nenhuma habilidade cadastrada ainda.</p>
-            {% endfor %}
+        <div class="skills-carousel-wrapper" data-aos="fade-up" data-aos-delay="100">
+            <button class="carousel-btn carousel-btn-left" onclick="scrollSkills(-1)" aria-label="Anterior">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <div class="skills-carousel" id="skillsCarousel">
+                {% for skill in skills %}
+                <div class="skill-card">
+                    <div class="skill-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <span class="skill-name">{{ skill.nome }}</span>
+                </div>
+                {% empty %}
+                <p class="text-muted">Nenhuma habilidade cadastrada ainda.</p>
+                {% endfor %}
+            </div>
+            <button class="carousel-btn carousel-btn-right" onclick="scrollSkills(1)" aria-label="Proximo">
+                <i class="fas fa-chevron-right"></i>
+            </button>
         </div>
     </div>
 </section>
 
 <section class="courses-section" id="formacao">
     <div class="container">
-        <h2 class="section-title" data-aos="fade-up">Formação</h2>
-
-        <div class="courses-list" data-aos="fade-up" data-aos-delay="100">
+        <h2 class="section-title" data-aos="fade-up">Formacao</h2>
+        <div class="courses-grid" data-aos="fade-up" data-aos-delay="100">
             {% for curso in cursos %}
-            <div class="course-item">
-                <div class="course-info">
-                    <h4>{{ curso.nome }}</h4>
-                    <p>{{ curso.plataforma }}</p>
+            <div class="course-card">
+                <div class="course-card-icon">
+                    {% if 'udemy' in curso.plataforma|lower %}
+                    <i class="fab fa-udemy"></i>
+                    {% elif 'alura' in curso.plataforma|lower %}
+                    <i class="fas fa-graduation-cap"></i>
+                    {% elif 'coursera' in curso.plataforma|lower %}
+                    <i class="fas fa-university"></i>
+                    {% elif 'rocketseat' in curso.plataforma|lower %}
+                    <i class="fas fa-rocket"></i>
+                    {% else %}
+                    <i class="fas fa-book-open"></i>
+                    {% endif %}
                 </div>
-                <span class="course-year">{{ curso.ano }}</span>
+                <div class="course-card-content">
+                    <h4>{{ curso.nome }}</h4>
+                    <p class="course-platform">{{ curso.plataforma }}</p>
+                    {% if curso.carga_horaria %}
+                    <span class="course-hours"><i class="far fa-clock"></i> {{ curso.carga_horaria }}</span>
+                    {% endif %}
+                </div>
+                {% if curso.ano %}
+                <span class="course-badge">{{ curso.ano }}</span>
+                {% endif %}
             </div>
             {% empty %}
-            <p class="text-muted text-center">Nenhuma formação cadastrada ainda.</p>
+            <p class="text-muted text-center">Nenhuma formacao cadastrada ainda.</p>
             {% endfor %}
         </div>
+    </div>
+</section>
 
-        <hr class="my-4">
-
+<section class="certificates-section" id="certificados">
+    <div class="container">
         <h2 class="section-title" data-aos="fade-up">Certificados</h2>
-
-        <div class="courses-list" data-aos="fade-up" data-aos-delay="200">
+        <div class="certificates-grid" data-aos="fade-up" data-aos-delay="100">
             {% for cert in certificados %}
-            <div class="course-item">
-                <div class="course-info">
+            <div class="certificate-card">
+                <div class="certificate-icon">
+                    <i class="fas fa-award"></i>
+                </div>
+                <div class="certificate-content">
                     <h4>{{ cert.nome }}</h4>
-                    <p>Emitido por: {{ cert.emissor }}</p>
-
+                    <p class="certificate-issuer">{{ cert.emissor }}</p>
                     {% if cert.data_emissao %}
-                    <small class="text-muted">Emitido em: {{ cert.data_emissao }}</small>
+                    <span class="certificate-date"><i class="far fa-calendar-alt"></i> {{ cert.data_emissao }}</span>
                     {% endif %}
                 </div>
-
-                <div class="course-actions">
+                <div class="certificate-actions">
                     {% if cert.imagem %}
-                        <a href="{{ cert.imagem.url }}" target="_blank">
-                            <img src="{{ cert.imagem.url }}" alt="{{ cert.nome }}" class="certificate-thumb">
-                        </a>
+                    <a href="{{ cert.imagem.url }}" target="_blank" class="btn-view-cert">
+                        <i class="fas fa-image"></i> Ver Imagem
+                    </a>
                     {% endif %}
-
                     {% if cert.arquivo_pdf %}
-                        <a href="{{ cert.arquivo_pdf.url }}" class="btn btn-primary btn-sm" target="_blank">
-                            Ver PDF
-                        </a>
+                    <a href="{{ cert.arquivo_pdf.url }}" target="_blank" class="btn-view-cert primary">
+                        <i class="fas fa-file-pdf"></i> Ver Certificado
+                    </a>
                     {% endif %}
                 </div>
             </div>
@@ -102,7 +133,6 @@
             <p class="text-muted text-center">Nenhum certificado cadastrado ainda.</p>
             {% endfor %}
         </div>
-
     </div>
 </section>
 

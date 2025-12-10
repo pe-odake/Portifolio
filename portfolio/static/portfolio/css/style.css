@@ -184,27 +184,100 @@ body {
     background: var(--bg-dark);
 }
 
-.skills-container {
+.skills-carousel-wrapper {
     display: flex;
-    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px;
+    position: relative;
+}
+
+.skills-carousel {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding: 10px 0;
+    flex: 1;
+}
+
+.skills-carousel::-webkit-scrollbar {
+    display: none;
+}
+
+.skill-card {
+    flex: 0 0 auto;
+    background: #F8FAFC;
+    border: 1px solid #E2E8F0;
+    border-radius: 12px;
+    padding: 20px 28px;
+    display: flex;
+    align-items: center;
     gap: 12px;
-}
-
-.skill-chip {
-    background: var(--bg-card);
-    color: var(--text-primary);
-    padding: 10px 20px;
-    border-radius: 20px;
-    font-size: 0.95rem;
-    font-weight: 500;
-    border: 1px solid var(--border-color);
     transition: all 0.3s ease;
+    cursor: default;
+    min-width: 160px;
 }
 
-.skill-chip:hover {
+.skill-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    border-color: var(--primary);
+}
+
+.skill-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.skill-icon i {
+    color: white;
+    font-size: 18px;
+}
+
+.skill-name {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #1E293B;
+    white-space: nowrap;
+}
+
+.carousel-btn {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: #ffffff;
+    border: 1px solid #E2E8F0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    flex-shrink: 0;
+}
+
+.carousel-btn:hover {
     background: var(--primary);
     border-color: var(--primary);
-    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(58, 134, 255, 0.3);
+}
+
+.carousel-btn:hover i {
+    color: white;
+}
+
+.carousel-btn i {
+    color: #64748B;
+    font-size: 14px;
+    transition: color 0.3s ease;
 }
 
 .courses-section {
@@ -212,37 +285,191 @@ body {
     background: var(--bg-card);
 }
 
-.courses-list {
-    max-width: 800px;
+.courses-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
 }
 
-.course-item {
+.course-card {
+    background: var(--bg-dark);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 24px;
     display: flex;
-    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.course-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+    border-color: var(--primary);
+}
+
+.course-card-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    display: flex;
     align-items: center;
-    padding: 20px 0;
-    border-bottom: 1px solid var(--border-color);
+    justify-content: center;
+    flex-shrink: 0;
 }
 
-.course-item:last-child {
-    border-bottom: none;
+.course-card-icon i {
+    color: white;
+    font-size: 20px;
 }
 
-.course-info h4 {
-    font-size: 1.1rem;
+.course-card-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.course-card-content h4 {
+    font-size: 1rem;
     font-weight: 600;
-    margin-bottom: 4px;
+    margin-bottom: 6px;
+    color: var(--text-primary);
+    line-height: 1.4;
 }
 
-.course-info p {
+.course-platform {
     color: var(--text-secondary);
-    margin: 0;
     font-size: 0.9rem;
+    margin: 0 0 8px 0;
 }
 
-.course-year {
-    color: var(--primary);
+.course-hours {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.course-hours i {
+    margin-right: 4px;
+}
+
+.course-badge {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: var(--primary);
+    color: white;
+    font-size: 0.75rem;
     font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 20px;
+}
+
+.certificates-section {
+    padding: 80px 0;
+    background: var(--bg-dark);
+}
+
+.certificates-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 24px;
+}
+
+.certificate-card {
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    border: 1px solid #E2E8F0;
+}
+
+.certificate-card:hover {
+    transform: translateY(-6px) scale(1.01);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.15);
+}
+
+.certificate-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.certificate-icon i {
+    color: white;
+    font-size: 24px;
+}
+
+.certificate-content h4 {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #1E293B;
+    margin-bottom: 6px;
+    line-height: 1.4;
+}
+
+.certificate-issuer {
+    color: #64748B;
+    font-size: 0.9rem;
+    margin: 0 0 8px 0;
+}
+
+.certificate-date {
+    font-size: 0.8rem;
+    color: #94A3B8;
+}
+
+.certificate-date i {
+    margin-right: 4px;
+}
+
+.certificate-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: auto;
+    padding-top: 12px;
+    border-top: 1px solid #E2E8F0;
+}
+
+.btn-view-cert {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    background: #F1F5F9;
+    color: #475569;
+    border: 1px solid #E2E8F0;
+}
+
+.btn-view-cert:hover {
+    background: #E2E8F0;
+    color: #1E293B;
+}
+
+.btn-view-cert.primary {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
+.btn-view-cert.primary:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(58, 134, 255, 0.3);
 }
 
 .contact-section {
@@ -518,68 +745,173 @@ body {
     }
 }
 
-/* --- RESPONSIVIDADE PARA CERTIFICADOS E CURSOS --- */
-@media (max-width: 768px) {
-
-    /* Cada item vira bloco vertical */
-    .course-item {
-        flex-direction: column;
-        align-items: flex-start;
+@media (max-width: 992px) {
+    .skills-carousel-wrapper {
         gap: 10px;
-        padding: 16px 0;
     }
-
-    /* Nome e plataforma do curso ocupam toda a largura */
-    .course-info h4 {
-        font-size: 1rem;
+    
+    .carousel-btn {
+        width: 36px;
+        height: 36px;
     }
-
-    .course-info p {
-        font-size: 0.85rem;
+    
+    .skill-card {
+        padding: 16px 20px;
+        min-width: 140px;
     }
-
-    /* Ano do curso abaixo e alinhado à esquerda */
-    .course-year {
-        align-self: flex-start;
-        font-size: 0.9rem;
-        margin-top: 4px;
+    
+    .courses-grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     }
-
-    /* Área de ações do certificado */
-    .course-actions {
-        flex-direction: row;
-        flex-wrap: wrap;
-        width: 100%;
-        gap: 6px;
-        margin-top: 10px;
-    }
-
-    /* Imagem do certificado menor e mais responsiva */
-    .certificate-thumb {
-        width: 60px;
-        margin-left: 0;
-        margin-top: 8px;
-        border-radius: 4px;
+    
+    .certificates-grid {
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     }
 }
 
-/* Ajustes para telas bem pequenas */
+@media (max-width: 768px) {
+    .skills-carousel-wrapper {
+        gap: 8px;
+    }
+    
+    .carousel-btn {
+        width: 32px;
+        height: 32px;
+    }
+    
+    .carousel-btn i {
+        font-size: 12px;
+    }
+    
+    .skill-card {
+        padding: 14px 18px;
+        min-width: 130px;
+        gap: 10px;
+    }
+    
+    .skill-icon {
+        width: 34px;
+        height: 34px;
+    }
+    
+    .skill-icon i {
+        font-size: 14px;
+    }
+    
+    .skill-name {
+        font-size: 0.85rem;
+    }
+    
+    .courses-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    
+    .course-card {
+        padding: 20px;
+    }
+    
+    .course-card-icon {
+        width: 42px;
+        height: 42px;
+    }
+    
+    .course-card-icon i {
+        font-size: 18px;
+    }
+    
+    .certificates-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    
+    .certificate-card {
+        padding: 20px;
+    }
+    
+    .certificate-icon {
+        width: 46px;
+        height: 46px;
+    }
+    
+    .certificate-icon i {
+        font-size: 20px;
+    }
+    
+    .btn-view-cert {
+        padding: 8px 14px;
+        font-size: 0.8rem;
+    }
+}
+
 @media (max-width: 480px) {
-
-    .course-item {
+    .carousel-btn-left,
+    .carousel-btn-right {
+        display: none;
+    }
+    
+    .skills-carousel {
+        padding: 10px 4px;
+    }
+    
+    .skill-card {
+        padding: 12px 16px;
+        min-width: 120px;
+    }
+    
+    .skill-icon {
+        width: 30px;
+        height: 30px;
+    }
+    
+    .skill-icon i {
+        font-size: 12px;
+    }
+    
+    .skill-name {
+        font-size: 0.8rem;
+    }
+    
+    .course-card {
+        padding: 16px;
         gap: 12px;
-        padding: 14px 0;
     }
-
-    .certificate-thumb {
-        width: 50px;
-    }
-
-    .course-info h4 {
+    
+    .course-card-content h4 {
         font-size: 0.95rem;
     }
-
-    .course-info p {
-        font-size: 0.8rem;
+    
+    .course-platform {
+        font-size: 0.85rem;
+    }
+    
+    .course-badge {
+        top: 12px;
+        right: 12px;
+        font-size: 0.7rem;
+        padding: 3px 8px;
+    }
+    
+    .certificate-card {
+        padding: 16px;
+        gap: 12px;
+    }
+    
+    .certificate-content h4 {
+        font-size: 0.95rem;
+    }
+    
+    .certificate-issuer {
+        font-size: 0.85rem;
+    }
+    
+    .certificate-actions {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .btn-view-cert {
+        justify-content: center;
+        width: 100%;
     }
 }

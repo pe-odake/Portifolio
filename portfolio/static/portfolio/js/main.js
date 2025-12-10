@@ -1,3 +1,17 @@
+function scrollSkills(direction) {
+    const carousel = document.getElementById('skillsCarousel');
+    if (carousel) {
+        const scrollAmount = 200;
+        carousel.scrollBy({
+            left: direction * scrollAmount,
+            behavior: 'smooth'
+        });
+    }
+}
+
+let touchStartX = 0;
+let touchEndX = 0;
+
 document.addEventListener('DOMContentLoaded', function() {
     const navbar = document.querySelector('.navbar');
     
@@ -8,6 +22,28 @@ document.addEventListener('DOMContentLoaded', function() {
             navbar.classList.remove('scrolled');
         }
     });
+
+    const skillsCarousel = document.getElementById('skillsCarousel');
+    if (skillsCarousel) {
+        skillsCarousel.addEventListener('touchstart', function(e) {
+            touchStartX = e.changedTouches[0].screenX;
+        }, false);
+        
+        skillsCarousel.addEventListener('touchend', function(e) {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, false);
+    }
+    
+    function handleSwipe() {
+        const swipeThreshold = 50;
+        if (touchStartX - touchEndX > swipeThreshold) {
+            scrollSkills(1);
+        }
+        if (touchEndX - touchStartX > swipeThreshold) {
+            scrollSkills(-1);
+        }
+    }
 
     const observerOptions = {
         threshold: 0.1,
@@ -23,7 +59,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }, observerOptions);
 
-    document.querySelectorAll('.project-card, .skill-chip, .course-item').forEach(el => {
+    document.querySelectorAll('.project-card, .skill-card, .course-card, .certificate-card').forEach(el => {
         el.classList.add('animate-ready');
         observer.observe(el);
     });
