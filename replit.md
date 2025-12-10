@@ -9,6 +9,9 @@ Portfolio profissional completo desenvolvido em Django com tema escuro moderno. 
 - 2024-12-10: Painel administrativo personalizado com CRUD completo
 - 2024-12-10: Area publica com design responsivo tema escuro
 - 2024-12-10: Sistema de autenticacao configurado
+- 2024-12-10: Secao Habilidades transformada em carrossel horizontal moderno com navegacao
+- 2024-12-10: Secao Formacoes redesenhada com cards elegantes e icones de plataforma
+- 2024-12-10: Secao Certificados separada com grid de cards modernos e botoes de visualizacao
 
 ## User Preferences
 - Design: Tema escuro (#1F2937, #111827, #3A86FF)
