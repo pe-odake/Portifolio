@@ -176,7 +176,7 @@ body {
     color: var(--text-secondary);
     font-size: 1.1rem;
     margin-bottom: 32px;
-    max-width: 500px;
+    max-width: 1000px;
 }
 
 .hero-buttons {

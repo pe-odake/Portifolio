@@ -12,7 +12,7 @@
                     <h1 class="hero-title">{% if perfil %}{{ perfil.nome }}{% else %}Seu Nome{% endif %}</h1>
                     <p class="hero-subtitle">{% if perfil %}{{ perfil.titulo_profissional }}{% else %}Desenvolvedor Full-Stack & Designer UI/UX{% endif %}</p>
                     <p class="hero-description">
-                        {% if perfil %}{{ perfil.resumo|truncatewords:30 }}{% else %}Apaixonado por criar solucoes digitais completas, desde o backend robusto com Django ate interfaces intuitivas e modernas com React e Figma.{% endif %}
+                        {% if perfil %}{{ perfil.resumo }}{% else %}Apaixonado por criar solucoes digitais completas, desde o backend robusto com Django ate interfaces intuitivas e modernas com React e Figma.{% endif %}
                     </p>
                     <div class="hero-buttons">
                         <a href="{% url 'projetos' %}" class="btn btn-primary btn-lg">Ver Projetos</a>
