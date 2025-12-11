@@ -100,7 +100,7 @@ LOGOUT_REDIRECT_URL = '/'
 CSRF_TRUSTED_ORIGINS = [
     'https://*.replit.dev',
     'https://*.repl.co',
-    'https://*.fly.dev',
+    'https://*.onrender.com',
 ]
 
 # Security settings for production
