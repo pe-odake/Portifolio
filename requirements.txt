@@ -7,3 +7,6 @@ psycopg2-binary
 django
 gunicorn
 pillow
+django
+gunicorn
+pillow
