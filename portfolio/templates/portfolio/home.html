@@ -47,13 +47,15 @@
             <div class="skills-carousel" id="skillsCarousel">
                 {% for skill in skills %}
                 <div class="skill-card">
-                    {% if perfil and perfil.foto %}
                     <div class="skill-icon">
-                         <img src="{{ skill.imagem }}" alt="Post image" />
+                        {% if skill.imagem %}
+                        <img src="{{ skill.imagem.url }}" alt="{{ skill.nome }}">
+                        {% else %}
+                        <i class="fas fa-code"></i>
+                        {% endif %}
                     </div>
-                    {% endif %}
+                    <span class="skill-name">{{ skill.nome }}</span>
                 </div>
-                {{ skill.imagem }}
                 {% empty %}
                 <p class="text-muted">Nenhuma habilidade cadastrada ainda.</p>
                 {% endfor %}

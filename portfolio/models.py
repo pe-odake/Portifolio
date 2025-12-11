@@ -50,7 +50,7 @@ class Skill(models.Model):
         ordering = ['ordem']
     
     def __str__(self):
-        return f"{self.nome} - {self.categoria}"
+        return self.nome
 
 class Curso(models.Model):
     nome = models.CharField(max_length=200)
