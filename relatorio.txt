@@ -1,0 +1,187 @@
+================================================================================
+                    RELATORIO DE DEPLOY - PORTFOLIO DJANGO NO FLY.IO
+================================================================================
+
+Data: Dezembro 2025
+Projeto: Portfolio Django
+
+================================================================================
+                              ALTERACOES REALIZADAS
+================================================================================
+
+1. REQUIREMENTS.TXT
+   - Removidas entradas duplicadas
+   - Adicionadas dependencias de producao:
+     * whitenoise (servir arquivos estaticos)
+     * dj-database-url (configuracao de banco via URL)
+     * psycopg2-binary (driver PostgreSQL)
+
+2. CORE/SETTINGS.PY
+   - DEBUG agora e controlado por variavel de ambiente
+   - SECRET_KEY via variavel de ambiente
+   - ALLOWED_HOSTS configuravel via variavel de ambiente
+   - Suporte a PostgreSQL via DATABASE_URL
+   - WhiteNoise configurado para servir arquivos estaticos
+   - STATIC_ROOT definido para collectstatic
+   - CSRF_TRUSTED_ORIGINS inclui *.fly.dev
+   - Configuracoes de seguranca SSL para producao
+
+3. DOCKERFILE
+   - Criado para build da aplicacao
+   - Python 3.11 slim como base
+   - Instala dependencias do sistema (libpq para PostgreSQL)
+   - Executa collectstatic automaticamente
+   - Roda gunicorn na porta 8080
+
+4. FLY.TOML
+   - Configuracao principal do Fly.io
+   - Regiao primaria: GRU (Sao Paulo)
+   - Memoria: 512MB
+   - Migracao automatica no deploy
+
+5. .DOCKERIGNORE
+   - Criado para excluir arquivos desnecessarios do build
+
+================================================================================
+                         INSTRUCOES DE DEPLOY NO FLY.IO
+================================================================================
+
+PASSO 1: INSTALAR O FLY CLI
+---------------------------
+# No Linux/Mac:
+curl -L https://fly.io/install.sh | sh
+
+# No Windows (PowerShell):
+pwsh -Command "iwr https://fly.io/install.ps1 -useb | iex"
+
+PASSO 2: FAZER LOGIN NO FLY.IO
+------------------------------
+fly auth login
+
+PASSO 3: CRIAR O APP NO FLY.IO
+------------------------------
+# Entre na pasta do projeto
+cd seu-projeto
+
+# Altere o nome do app no fly.toml (linha "app = ")
+# Escolha um nome unico, exemplo: "meu-portfolio-django"
+
+# Crie o app (sem fazer deploy ainda)
+fly apps create seu-app-name
+
+PASSO 4: CRIAR BANCO DE DADOS POSTGRESQL
+----------------------------------------
+fly postgres create --name seu-app-name-db
+
+# Anexar o banco ao app
+fly postgres attach seu-app-name-db --app seu-app-name
+
+# Isso vai criar automaticamente a variavel DATABASE_URL
+
+PASSO 5: CONFIGURAR VARIAVEIS DE AMBIENTE (SECRETS)
+----------------------------------------------------
+# Gere uma SECRET_KEY segura (pode usar o Python):
+python -c "import secrets; print(secrets.token_urlsafe(50))"
+
+# Configure as variaveis
+fly secrets set SECRET_KEY="sua-chave-secreta-gerada"
+fly secrets set ALLOWED_HOSTS="seu-app-name.fly.dev"
+
+PASSO 6: FAZER O DEPLOY
+-----------------------
+fly deploy
+
+# O deploy vai:
+# 1. Construir a imagem Docker
+# 2. Fazer upload para o Fly.io
+# 3. Executar as migracoes (release_command)
+# 4. Iniciar o servidor gunicorn
+
+PASSO 7: CRIAR SUPERUSUARIO
+---------------------------
+# Apos o deploy, crie um admin para acessar o painel
+fly ssh console
+python manage.py createsuperuser
+exit
+
+PASSO 8: VERIFICAR O DEPLOY
+---------------------------
+# Ver status
+fly status
+
+# Ver logs
+fly logs
+
+# Abrir o app no navegador
+fly open
+
+================================================================================
+                              COMANDOS UTEIS
+================================================================================
+
+# Ver logs em tempo real
+fly logs
+
+# Acessar o console do app
+fly ssh console
+
+# Reiniciar o app
+fly apps restart seu-app-name
+
+# Ver informacoes do banco
+fly postgres connect -a seu-app-name-db
+
+# Escalar maquinas
+fly scale count 1 --app seu-app-name
+
+# Ver metricas
+fly dashboard
+
+================================================================================
+                           TROUBLESHOOTING
+================================================================================
+
+PROBLEMA: "No instances running"
+SOLUCAO: fly scale count 1
+
+PROBLEMA: Erro de migracao
+SOLUCAO: fly ssh console -> python manage.py migrate
+
+PROBLEMA: Arquivos estaticos nao carregam
+SOLUCAO: fly ssh console -> python manage.py collectstatic --noinput
+
+PROBLEMA: Erro 500 Internal Server Error
+SOLUCAO: fly logs (para ver o erro detalhado)
+
+PROBLEMA: Banco nao conecta
+SOLUCAO: Verifique se o DATABASE_URL foi criado: fly secrets list
+
+================================================================================
+                           CUSTOS ESTIMADOS
+================================================================================
+
+Fly.io oferece:
+- Free tier: 3 VMs compartilhadas, 3GB de armazenamento
+- PostgreSQL: 1GB gratis no plano Hobby
+
+Para este projeto:
+- VM shared-cpu-1x (512MB): ~$1.94/mes
+- PostgreSQL (1GB): Gratis no tier hobby
+
+================================================================================
+                              PROXIMOS PASSOS
+================================================================================
+
+1. Configurar dominio customizado (opcional):
+   fly certs add seu-dominio.com.br
+
+2. Configurar volumes para arquivos de media (uploads):
+   fly volumes create portfolio_data --size 1
+   # E ajustar o Dockerfile para montar o volume
+
+3. Configurar backups do banco:
+   fly postgres backup create
+
+================================================================================
+                           FIM DO RELATORIO
+================================================================================
