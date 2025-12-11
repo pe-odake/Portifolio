@@ -16,11 +16,6 @@ class HomeView(TemplateView):
         context['projetos'] = Projeto.objects.all()[:6]
         context['projetos_destaque'] = Projeto.objects.filter(destaque=True)[:4]
         context['skills'] = Skill.objects.all()
-        context['skills_por_categoria'] = {}
-        for skill in Skill.objects.all():
-            if skill.categoria not in context['skills_por_categoria']:
-                context['skills_por_categoria'][skill.categoria] = []
-            context['skills_por_categoria'][skill.categoria].append(skill)
         context['cursos'] = Curso.objects.all()
         context['certificados'] = Certificado.objects.all()
         return context

@@ -1,5 +1,5 @@
 """
-Django settings for portfolio_config project.
+Django settings for core project.
 """
 
 from pathlib import Path
@@ -33,7 +33,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'portfolio_config.urls'
+ROOT_URLCONF = 'core.urls'
 
 TEMPLATES = [
     {
@@ -50,7 +50,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'portfolio_config.wsgi.application'
+WSGI_APPLICATION = 'core.wsgi.application'
 
 DATABASES = {
     'default': {

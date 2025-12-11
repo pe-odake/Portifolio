@@ -39,30 +39,18 @@ class Projeto(models.Model):
 
 
 class Skill(models.Model):
-    NIVEL_CHOICES = [
-        ('iniciante', 'Iniciante'),
-        ('intermediario', 'Intermediario'),
-        ('avancado', 'Avancado'),
-        ('expert', 'Expert'),
-    ]
     
     nome = models.CharField(max_length=100)
-    categoria = models.CharField(max_length=100)
-    nivel = models.CharField(max_length=20, choices=NIVEL_CHOICES, default='intermediario')
+    imagem = models.ImageField(upload_to='skills/', blank=True, null=True)
     ordem = models.IntegerField(default=0)
     
     class Meta:
         verbose_name = 'Habilidade'
         verbose_name_plural = 'Habilidades'
-        ordering = ['categoria', 'ordem']
+        ordering = ['ordem']
     
     def __str__(self):
         return f"{self.nome} - {self.categoria}"
-    
-    def get_nivel_percentual(self):
-        niveis = {'iniciante': 25, 'intermediario': 50, 'avancado': 75, 'expert': 100}
-        return niveis.get(self.nivel, 50)
-
 
 class Curso(models.Model):
     nome = models.CharField(max_length=200)

@@ -19,11 +19,9 @@ class ProjetoForm(forms.ModelForm):
 class SkillForm(forms.ModelForm):
     class Meta:
         model = Skill
-        fields = ['nome', 'categoria', 'nivel', 'ordem']
+        fields = ['nome', 'imagem', 'ordem']
         widgets = {
             'nome': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nome da habilidade'}),
-            'categoria': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ex: Backend, Frontend, DevOps'}),
-            'nivel': forms.Select(attrs={'class': 'form-select'}),
             'ordem': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': '0'}),
         }
 
