@@ -12,6 +12,7 @@ Portfolio profissional completo desenvolvido em Django com tema escuro moderno. 
 - 2024-12-10: Secao Habilidades transformada em carrossel horizontal moderno com navegacao
 - 2024-12-10: Secao Formacoes redesenhada com cards elegantes e icones de plataforma
 - 2024-12-10: Secao Certificados separada com grid de cards modernos e botoes de visualizacao
+- 2024-12-11: Projeto preparado para deploy no Fly.io (Dockerfile, fly.toml, WhiteNoise, PostgreSQL)
 
 ## User Preferences
 - Design: Tema escuro (#1F2937, #111827, #3A86FF)
@@ -51,7 +52,8 @@ media/            # Uploads de usuarios (projetos, certificados, perfil)
 - Senha: admin123
 
 ### Banco de Dados
-- SQLite (db.sqlite3)
+- Desenvolvimento: SQLite (db.sqlite3)
+- Producao: PostgreSQL (via DATABASE_URL)
 
 ### Comandos Uteis
 ```bash
@@ -59,4 +61,19 @@ python manage.py runserver 0.0.0.0:5000  # Iniciar servidor
 python manage.py makemigrations          # Criar migracoes
 python manage.py migrate                 # Aplicar migracoes
 python manage.py createsuperuser         # Criar admin
+python manage.py collectstatic           # Coletar arquivos estaticos
 ```
+
+## Deploy no Fly.io
+Arquivos de configuracao:
+- `Dockerfile` - Build da aplicacao
+- `fly.toml` - Configuracao do Fly.io
+- `.dockerignore` - Arquivos excluidos do build
+- `relatorio.txt` - Instrucoes completas de deploy
+- `env.txt` - Variaveis de ambiente necessarias
+
+Dependencias de producao:
+- whitenoise (arquivos estaticos)
+- dj-database-url (PostgreSQL)
+- psycopg2-binary (driver PostgreSQL)
+- gunicorn (servidor WSGI)
