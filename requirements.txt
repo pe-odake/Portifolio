@@ -2,11 +2,3 @@ django
 gunicorn
 pillow
 whitenoise
-dj-database-url
-psycopg2-binary
-django
-gunicorn
-pillow
-django
-gunicorn
-pillow
