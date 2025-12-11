@@ -13,6 +13,8 @@ Portfolio profissional completo desenvolvido em Django com tema escuro moderno. 
 - 2024-12-10: Secao Formacoes redesenhada com cards elegantes e icones de plataforma
 - 2024-12-10: Secao Certificados separada com grid de cards modernos e botoes de visualizacao
 - 2024-12-11: Projeto preparado para deploy no Render + Neon (Dockerfile, render.yaml, WhiteNoise, PostgreSQL)
+- 2024-12-11: Adicionado toggle de modo escuro/claro com persistencia via localStorage
+- 2024-12-11: Secao de skills redesenhada com icone em cima e nome embaixo
 
 ## User Preferences
 - Design: Tema escuro (#1F2937, #111827, #3A86FF)
