@@ -4,3 +4,6 @@ pillow
 whitenoise
 dj-database-url
 psycopg2-binary
+django
+gunicorn
+pillow
