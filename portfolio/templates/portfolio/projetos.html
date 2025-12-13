@@ -35,8 +35,6 @@
                                 {% endfor %}
                             </div>
                             {% if imagens.count > 1 %}
-                            <button class="carousel-nav prev" aria-label="Anterior"><i class="fas fa-chevron-left"></i></button>
-                            <button class="carousel-nav next" aria-label="Proximo"><i class="fas fa-chevron-right"></i></button>
                             <div class="carousel-dots">
                                 {% for img in imagens %}
                                 <span class="dot{% if forloop.first %} active{% endif %}" data-index="{{ forloop.counter0 }}"></span>
