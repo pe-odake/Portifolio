@@ -3,7 +3,8 @@ from django.views.generic import TemplateView, ListView, CreateView, UpdateView,
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.urls import reverse_lazy
-from .models import Projeto, Skill, Curso, Certificado, Perfil, Contato
+from django.http import JsonResponse
+from .models import Projeto, Skill, Curso, Certificado, Perfil, Contato, ProjetoImagem
 from .forms import ProjetoForm, SkillForm, CursoForm, CertificadoForm, PerfilForm, ContatoForm
 
 
@@ -13,8 +14,8 @@ class HomeView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['perfil'] = Perfil.objects.first()
-        context['projetos'] = Projeto.objects.all()[:6]
-        context['projetos_destaque'] = Projeto.objects.filter(destaque=True)[:4]
+        context['projetos'] = Projeto.objects.prefetch_related('skills', 'imagens').all()[:6]
+        context['projetos_destaque'] = Projeto.objects.filter(destaque=True).prefetch_related('skills', 'imagens')[:4]
         context['skills'] = Skill.objects.all()
         context['cursos'] = Curso.objects.all()
         context['certificados'] = Certificado.objects.all()
@@ -25,6 +26,9 @@ class ProjetosView(ListView):
     model = Projeto
     template_name = 'portfolio/projetos.html'
     context_object_name = 'projetos'
+    
+    def get_queryset(self):
+        return Projeto.objects.prefetch_related('skills', 'imagens').all()
 
 
 class ContatoView(FormView):
@@ -62,40 +66,64 @@ class ProjetoListView(LoginRequiredMixin, ListView):
     model = Projeto
     template_name = 'admin_panel/projetos_list.html'
     context_object_name = 'projetos'
+    
+    def get_queryset(self):
+        return Projeto.objects.prefetch_related('skills', 'imagens').all()
 
 
 class ProjetoCreateView(LoginRequiredMixin, CreateView):
     model = Projeto
     form_class = ProjetoForm
-    template_name = 'admin_panel/form.html'
+    template_name = 'admin_panel/projeto_form.html'
     success_url = reverse_lazy('admin_projetos')
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['titulo'] = 'Novo Projeto'
         context['voltar_url'] = 'admin_projetos'
+        context['all_skills'] = Skill.objects.all()
         return context
     
     def form_valid(self, form):
+        response = super().form_valid(form)
+        galeria_files = self.request.FILES.getlist('galeria')
+        for i, img in enumerate(galeria_files):
+            ProjetoImagem.objects.create(
+                projeto=self.object,
+                imagem=img,
+                ordem=i
+            )
         messages.success(self.request, 'Projeto criado com sucesso!')
-        return super().form_valid(form)
+        return response
 
 
 class ProjetoUpdateView(LoginRequiredMixin, UpdateView):
     model = Projeto
     form_class = ProjetoForm
-    template_name = 'admin_panel/form.html'
+    template_name = 'admin_panel/projeto_form.html'
     success_url = reverse_lazy('admin_projetos')
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['titulo'] = 'Editar Projeto'
         context['voltar_url'] = 'admin_projetos'
+        context['all_skills'] = Skill.objects.all()
+        context['projeto_imagens'] = self.object.imagens.all()
         return context
     
     def form_valid(self, form):
+        response = super().form_valid(form)
+        galeria_files = self.request.FILES.getlist('galeria')
+        if galeria_files:
+            last_order = self.object.imagens.count()
+            for i, img in enumerate(galeria_files):
+                ProjetoImagem.objects.create(
+                    projeto=self.object,
+                    imagem=img,
+                    ordem=last_order + i
+                )
         messages.success(self.request, 'Projeto atualizado com sucesso!')
-        return super().form_valid(form)
+        return response
 
 
 class ProjetoDeleteView(LoginRequiredMixin, DeleteView):
@@ -112,6 +140,16 @@ class ProjetoDeleteView(LoginRequiredMixin, DeleteView):
     def form_valid(self, form):
         messages.success(self.request, 'Projeto excluido com sucesso!')
         return super().form_valid(form)
+
+
+class ProjetoImagemDeleteView(LoginRequiredMixin, DeleteView):
+    model = ProjetoImagem
+    
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        projeto_id = self.object.projeto.id
+        self.object.delete()
+        return JsonResponse({'success': True, 'projeto_id': projeto_id})
 
 
 class SkillListView(LoginRequiredMixin, ListView):

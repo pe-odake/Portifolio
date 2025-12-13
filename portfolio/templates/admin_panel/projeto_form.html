@@ -1,0 +1,291 @@
+{% extends 'admin_panel/base.html' %}
+{% load static %}
+
+{% block title %}{{ titulo }} - Painel{% endblock %}
+{% block page_title %}{{ titulo }}{% endblock %}
+
+{% block admin_content %}
+<div class="admin-card">
+    <div class="card-header">
+        <h5><i class="fas fa-edit"></i> {{ titulo }}</h5>
+        <a href="{% url voltar_url %}" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left"></i> Voltar
+        </a>
+    </div>
+    <div class="card-body">
+        <form method="post" enctype="multipart/form-data" class="admin-form" id="projetoForm">
+            {% csrf_token %}
+            
+            <div class="mb-3">
+                <label class="form-label">Titulo</label>
+                {{ form.titulo }}
+                {% if form.titulo.errors %}
+                <div class="invalid-feedback d-block">
+                    {% for error in form.titulo.errors %}{{ error }}{% endfor %}
+                </div>
+                {% endif %}
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label">Descricao</label>
+                {{ form.descricao }}
+                {% if form.descricao.errors %}
+                <div class="invalid-feedback d-block">
+                    {% for error in form.descricao.errors %}{{ error }}{% endfor %}
+                </div>
+                {% endif %}
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label">Imagem Principal</label>
+                {{ form.imagem }}
+                {% if object.imagem %}
+                <div class="current-image mt-2">
+                    <img src="{{ object.imagem.url }}" alt="Imagem atual" class="img-thumbnail" style="max-height: 150px;">
+                </div>
+                {% endif %}
+                {% if form.imagem.errors %}
+                <div class="invalid-feedback d-block">
+                    {% for error in form.imagem.errors %}{{ error }}{% endfor %}
+                </div>
+                {% endif %}
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label">Galeria de Imagens</label>
+                <input type="file" name="galeria" id="galeria" class="form-control" accept="image/png,image/jpeg,image/webp,image/gif" multiple>
+                <small class="text-muted">Selecione multiplas imagens para o carrossel do projeto (max 5MB cada)</small>
+                
+                <div id="imagePreview" class="image-preview-grid mt-3"></div>
+                
+                {% if projeto_imagens %}
+                <div class="current-gallery mt-3">
+                    <h6>Imagens Atuais:</h6>
+                    <div class="gallery-grid">
+                        {% for img in projeto_imagens %}
+                        <div class="gallery-item" data-id="{{ img.id }}">
+                            <img src="{{ img.imagem.url }}" alt="Imagem {{ img.ordem }}" class="img-thumbnail">
+                            <button type="button" class="btn btn-sm btn-danger delete-gallery-img" data-id="{{ img.id }}">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Link do Repositorio</label>
+                    {{ form.link_repositorio }}
+                    {% if form.link_repositorio.errors %}
+                    <div class="invalid-feedback d-block">
+                        {% for error in form.link_repositorio.errors %}{{ error }}{% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Link do Deploy</label>
+                    {{ form.link_deploy }}
+                    {% if form.link_deploy.errors %}
+                    <div class="invalid-feedback d-block">
+                        {% for error in form.link_deploy.errors %}{{ error }}{% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="mb-3">
+                <div class="form-check">
+                    {{ form.destaque }}
+                    <label class="form-check-label">Projeto em Destaque</label>
+                </div>
+            </div>
+            
+            <div class="mb-4">
+                <label class="form-label">Habilidades Utilizadas</label>
+                <div class="skills-select-grid">
+                    {% for skill in all_skills %}
+                    <label class="skill-checkbox">
+                        <input type="checkbox" name="skills" value="{{ skill.id }}" 
+                            {% if object and skill in object.skills.all %}checked{% endif %}>
+                        <span class="skill-label">
+                            {% if skill.imagem %}
+                            <img src="{{ skill.imagem.url }}" alt="{{ skill.nome }}" class="skill-icon-small">
+                            {% else %}
+                            <i class="fas fa-code"></i>
+                            {% endif %}
+                            {{ skill.nome }}
+                        </span>
+                    </label>
+                    {% empty %}
+                    <p class="text-muted">Nenhuma habilidade cadastrada. <a href="{% url 'admin_skill_criar' %}">Criar primeira</a></p>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Salvar
+                </button>
+                <a href="{% url voltar_url %}" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+.skills-select-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 12px;
+    padding: 16px;
+    background: var(--bg-dark, #1f2937);
+    border-radius: 8px;
+    border: 1px solid var(--border-color, #374151);
+}
+
+.skill-checkbox {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.skill-checkbox input[type="checkbox"] {
+    display: none;
+}
+
+.skill-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    background: var(--bg-card, #374151);
+    border: 2px solid transparent;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    width: 100%;
+}
+
+.skill-checkbox input[type="checkbox"]:checked + .skill-label {
+    border-color: var(--primary, #3a86ff);
+    background: rgba(58, 134, 255, 0.1);
+}
+
+.skill-icon-small {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+}
+
+.image-preview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 12px;
+}
+
+.preview-item {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.preview-item img {
+    width: 100%;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.preview-item .remove-preview {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    background: rgba(239, 68, 68, 0.9);
+    border: none;
+    color: white;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 12px;
+}
+
+.gallery-item {
+    position: relative;
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.gallery-item .delete-gallery-img {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    padding: 4px 8px;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const galeriaInput = document.getElementById('galeria');
+    const previewContainer = document.getElementById('imagePreview');
+    
+    if (galeriaInput) {
+        galeriaInput.addEventListener('change', function(e) {
+            previewContainer.innerHTML = '';
+            const files = e.target.files;
+            
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const div = document.createElement('div');
+                        div.className = 'preview-item';
+                        div.innerHTML = `
+                            <img src="${e.target.result}" alt="Preview">
+                        `;
+                        previewContainer.appendChild(div);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
+        });
+    }
+    
+    document.querySelectorAll('.delete-gallery-img').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const id = this.dataset.id;
+            if (confirm('Tem certeza que deseja excluir esta imagem?')) {
+                fetch(`/painel/projetos/imagem/${id}/excluir/`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        this.closest('.gallery-item').remove();
+                    }
+                });
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

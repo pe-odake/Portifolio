@@ -62,11 +62,11 @@ document.addEventListener('DOMContentLoaded', function() {
         
         skillsCarousel.addEventListener('touchend', function(e) {
             touchEndX = e.changedTouches[0].screenX;
-            handleSwipe();
+            handleSkillsSwipe();
         }, false);
     }
     
-    function handleSwipe() {
+    function handleSkillsSwipe() {
         const swipeThreshold = 50;
         if (touchStartX - touchEndX > swipeThreshold) {
             scrollSkills(1);
@@ -75,6 +75,8 @@ document.addEventListener('DOMContentLoaded', function() {
             scrollSkills(-1);
         }
     }
+
+    initProjectCarousels();
 
     const observerOptions = {
         threshold: 0.1,
@@ -121,3 +123,125 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 5000);
     });
 });
+
+function initProjectCarousels() {
+    const carousels = document.querySelectorAll('[data-carousel]');
+    
+    carousels.forEach(carousel => {
+        const slides = carousel.querySelectorAll('.carousel-slide');
+        const dots = carousel.querySelectorAll('.dot');
+        const prevBtn = carousel.querySelector('.carousel-nav.prev');
+        const nextBtn = carousel.querySelector('.carousel-nav.next');
+        
+        if (slides.length <= 1) return;
+        
+        let currentIndex = 0;
+        let startX = 0;
+        let endX = 0;
+        let isDragging = false;
+        
+        function showSlide(index) {
+            if (index >= slides.length) index = 0;
+            if (index < 0) index = slides.length - 1;
+            
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
+            });
+            
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === index);
+            });
+            
+            currentIndex = index;
+        }
+        
+        if (prevBtn) {
+            prevBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                showSlide(currentIndex - 1);
+            });
+        }
+        
+        if (nextBtn) {
+            nextBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                showSlide(currentIndex + 1);
+            });
+        }
+        
+        dots.forEach((dot, i) => {
+            dot.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                showSlide(i);
+            });
+        });
+        
+        carousel.addEventListener('touchstart', (e) => {
+            startX = e.touches[0].clientX;
+            isDragging = true;
+        }, { passive: true });
+        
+        carousel.addEventListener('touchmove', (e) => {
+            if (!isDragging) return;
+            endX = e.touches[0].clientX;
+        }, { passive: true });
+        
+        carousel.addEventListener('touchend', () => {
+            if (!isDragging) return;
+            isDragging = false;
+            
+            const diff = startX - endX;
+            const threshold = 50;
+            
+            if (Math.abs(diff) > threshold) {
+                if (diff > 0) {
+                    showSlide(currentIndex + 1);
+                } else {
+                    showSlide(currentIndex - 1);
+                }
+            }
+            
+            startX = 0;
+            endX = 0;
+        });
+        
+        carousel.addEventListener('mousedown', (e) => {
+            startX = e.clientX;
+            isDragging = true;
+            carousel.style.cursor = 'grabbing';
+        });
+        
+        carousel.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            endX = e.clientX;
+        });
+        
+        carousel.addEventListener('mouseup', () => {
+            if (!isDragging) return;
+            isDragging = false;
+            carousel.style.cursor = 'grab';
+            
+            const diff = startX - endX;
+            const threshold = 50;
+            
+            if (Math.abs(diff) > threshold) {
+                if (diff > 0) {
+                    showSlide(currentIndex + 1);
+                } else {
+                    showSlide(currentIndex - 1);
+                }
+            }
+            
+            startX = 0;
+            endX = 0;
+        });
+        
+        carousel.addEventListener('mouseleave', () => {
+            isDragging = false;
+            carousel.style.cursor = 'grab';
+        });
+    });
+}

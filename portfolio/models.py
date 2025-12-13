@@ -1,4 +1,12 @@
 from django.db import models
+from django.core.validators import FileExtensionValidator
+from django.core.exceptions import ValidationError
+
+
+def validate_image_size(value):
+    filesize = value.size
+    if filesize > 5 * 1024 * 1024:
+        raise ValidationError("O tamanho maximo da imagem e 5MB")
 
 
 class Perfil(models.Model):
@@ -20,6 +28,28 @@ class Perfil(models.Model):
         return self.nome
 
 
+class Skill(models.Model):
+    nome = models.CharField(max_length=100)
+    imagem = models.ImageField(
+        upload_to='skills/',
+        blank=True,
+        null=True,
+        validators=[
+            FileExtensionValidator(allowed_extensions=['png', 'jpg', 'jpeg', 'svg', 'webp']),
+            validate_image_size
+        ]
+    )
+    ordem = models.IntegerField(default=0)
+    
+    class Meta:
+        verbose_name = 'Habilidade'
+        verbose_name_plural = 'Habilidades'
+        ordering = ['ordem']
+    
+    def __str__(self):
+        return self.nome
+
+
 class Projeto(models.Model):
     titulo = models.CharField(max_length=200)
     descricao = models.TextField()
@@ -28,6 +58,7 @@ class Projeto(models.Model):
     link_deploy = models.URLField(blank=True)
     criado_em = models.DateTimeField(auto_now_add=True)
     destaque = models.BooleanField(default=False)
+    skills = models.ManyToManyField(Skill, blank=True, related_name='projetos', verbose_name='Habilidades')
     
     class Meta:
         verbose_name = 'Projeto'
@@ -38,19 +69,24 @@ class Projeto(models.Model):
         return self.titulo
 
 
-class Skill(models.Model):
-    
-    nome = models.CharField(max_length=100)
-    imagem = models.ImageField(upload_to='skills/', blank=True, null=True)
+class ProjetoImagem(models.Model):
+    projeto = models.ForeignKey(Projeto, on_delete=models.CASCADE, related_name='imagens')
+    imagem = models.ImageField(
+        upload_to='projetos/galeria/',
+        validators=[
+            FileExtensionValidator(allowed_extensions=['png', 'jpg', 'jpeg', 'webp', 'gif']),
+            validate_image_size
+        ]
+    )
     ordem = models.IntegerField(default=0)
     
     class Meta:
-        verbose_name = 'Habilidade'
-        verbose_name_plural = 'Habilidades'
+        verbose_name = 'Imagem do Projeto'
+        verbose_name_plural = 'Imagens do Projeto'
         ordering = ['ordem']
     
     def __str__(self):
-        return self.nome
+        return f"Imagem {self.ordem} - {self.projeto.titulo}"
 
 class Curso(models.Model):
     nome = models.CharField(max_length=200)

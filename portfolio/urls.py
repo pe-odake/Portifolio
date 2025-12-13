@@ -16,6 +16,7 @@ urlpatterns = [
     path('painel/projetos/novo/', views.ProjetoCreateView.as_view(), name='admin_projeto_criar'),
     path('painel/projetos/<int:pk>/editar/', views.ProjetoUpdateView.as_view(), name='admin_projeto_editar'),
     path('painel/projetos/<int:pk>/excluir/', views.ProjetoDeleteView.as_view(), name='admin_projeto_excluir'),
+    path('painel/projetos/imagem/<int:pk>/excluir/', views.ProjetoImagemDeleteView.as_view(), name='admin_projeto_imagem_excluir'),
     
     path('painel/skills/', views.SkillListView.as_view(), name='admin_skills'),
     path('painel/skills/novo/', views.SkillCreateView.as_view(), name='admin_skill_criar'),
