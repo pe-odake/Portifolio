@@ -2,3 +2,7 @@ django
 gunicorn
 pillow
 whitenoise
+django
+gunicorn
+pillow
+whitenoise
