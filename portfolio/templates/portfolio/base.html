@@ -29,15 +29,40 @@
                     <li class="nav-item ms-2">
                         <a class="btn btn-primary btn-sm" href="{% url 'contato' %}">Contact Me</a>
                     </li>
-                    <li class="nav-item ms-3">
-                        <button class="theme-toggle" id="themeToggle" aria-label="Alternar tema">
-                            <i class="fas fa-moon" id="themeIcon"></i>
+                    <li class="nav-item ms-3 theme-toggle-desktop">
+                        <button class="theme-toggle" id="themeToggleDesktop" aria-label="Alternar tema">
+                            <i class="fas fa-moon" id="themeIconDesktop"></i>
                         </button>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
+
+    <button class="theme-toggle-float" id="themeToggleFloat" aria-label="Alternar tema">
+        <i class="fas fa-moon" id="themeIconFloat"></i>
+    </button>
+
+    <div class="project-modal-overlay" id="projectModal">
+        <div class="project-modal-backdrop"></div>
+        <div class="project-modal-content">
+            <button class="project-modal-close" aria-label="Fechar">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="project-modal-carousel" data-modal-carousel>
+                <div class="carousel-inner" id="modalCarouselInner"></div>
+                <button class="carousel-nav prev" aria-label="Anterior"><i class="fas fa-chevron-left"></i></button>
+                <button class="carousel-nav next" aria-label="Proximo"><i class="fas fa-chevron-right"></i></button>
+                <div class="carousel-dots" id="modalCarouselDots"></div>
+            </div>
+            <div class="project-modal-info">
+                <h3 id="modalProjectTitle"></h3>
+                <p id="modalProjectDescription"></p>
+                <div class="project-modal-skills" id="modalProjectSkills"></div>
+                <div class="project-modal-links" id="modalProjectLinks"></div>
+            </div>
+        </div>
+    </div>
 
     <main>
         {% block content %}{% endblock %}
