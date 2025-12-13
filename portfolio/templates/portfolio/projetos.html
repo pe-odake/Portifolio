@@ -17,10 +17,10 @@
             {% for projeto in projetos %}
             <div class="col-lg-4 col-md-6">
                 <div class="project-card"
-                     data-project-title="{{ projeto.titulo }}"
-                     data-project-description="{{ projeto.descricao }}"
-                     data-project-images="[{% for img in projeto.imagens.all %}{% if not forloop.first %},{% endif %}&quot;{{ img.imagem.url }}&quot;{% endfor %}]"
-                     data-project-skills="[{% for skill in projeto.skills.all %}{% if not forloop.first %},{% endif %}{&quot;name&quot;:&quot;{{ skill.nome }}&quot;,&quot;img&quot;:{% if skill.imagem %}&quot;{{ skill.imagem.url }}&quot;{% else %}null{% endif %}}{% endfor %}]"
+                     data-project-title="{{ projeto.titulo|escapejs }}"
+                     data-project-description="{{ projeto.descricao|escapejs }}"
+                     data-project-images="[{% with projeto.imagens.all as imagens %}{% if imagens %}{% for img in imagens %}{% if not forloop.first %},{% endif %}&quot;{{ img.imagem.url }}&quot;{% endfor %}{% elif projeto.imagem %}&quot;{{ projeto.imagem.url }}&quot;{% endif %}{% endwith %}]"
+                     data-project-skills="[{% for skill in projeto.skills.all %}{% if not forloop.first %},{% endif %}{&quot;name&quot;:&quot;{{ skill.nome|escapejs }}&quot;,&quot;img&quot;:{% if skill.imagem %}&quot;{{ skill.imagem.url }}&quot;{% else %}null{% endif %}}{% endfor %}]"
                      data-project-repo="{{ projeto.link_repositorio }}"
                      data-project-demo="{{ projeto.link_deploy|default:'' }}">
                     <div class="project-image-wrapper">
