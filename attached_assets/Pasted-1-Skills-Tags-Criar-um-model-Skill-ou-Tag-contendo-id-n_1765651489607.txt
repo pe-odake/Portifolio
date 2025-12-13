@@ -1,0 +1,155 @@
+1️⃣ Skills / Tags
+
+Criar um model Skill (ou Tag), contendo:
+
+id
+
+name
+
+icon (SVG ou PNG, preferencialmente SVG)
+
+Criar relacionamento Many-to-Many entre Project e Skill
+
+Permitir que um projeto tenha múltiplas skills
+
+Garantir que as skills possam ser reutilizadas entre projetos
+
+2️⃣ Múltiplas imagens por projeto
+
+Criar um model ProjectImage relacionado a Project:
+
+id
+
+project (ForeignKey)
+
+image
+
+order (opcional, para controle da ordem no carrossel)
+
+Um projeto pode possuir N imagens
+
+Ajustar serializers/controllers para retornar:
+
+Lista de skills
+
+Lista de imagens do projeto
+
+3️⃣ Forms / Admin / Validações
+
+Atualizar formulários do backend para:
+
+Selecionar múltiplas skills
+
+Upload de múltiplas imagens
+
+Garantir validações de:
+
+Tipo de imagem
+
+Tamanho máximo
+
+Manter compatibilidade com dados já existentes
+
+🎨 Frontend (UI / UX)
+4️⃣ Formulário de criação/edição de projeto
+
+Campo para selecionar múltiplas skills (multiselect ou checkboxes)
+
+Upload de múltiplas imagens com preview
+
+UX clara e intuitiva
+
+🖼️ Carrossel de imagens do projeto
+
+Implementar um carrossel responsivo
+
+Requisitos:
+
+Todas as imagens devem:
+
+Manter proporção (object-fit: contain ou cover, conforme contexto)
+
+Caber perfeitamente no container
+
+Não distorcer
+
+Suporte a:
+
+Touch (mobile)
+
+Navegação por botões
+
+Swipe
+
+O carrossel deve se adaptar a diferentes tamanhos de tela
+
+🧩 Carrossel de Skills / Habilidades
+Requisitos visuais:
+
+Ícones das skills:
+
+Fundo totalmente transparente
+
+Preferência por SVG
+
+Tamanho responsivo:
+
+Ajustar automaticamente em mobile, tablet e desktop
+
+Alinhamento uniforme entre os ícones
+
+Espaçamento consistente
+
+Requisitos técnicos:
+
+As imagens devem:
+
+Usar object-fit: contain
+
+Ter largura e altura controladas via CSS
+
+O carrossel deve:
+
+Ser leve
+
+Não quebrar layout em telas pequenas
+
+Ter fallback para lista simples caso JS falhe
+
+📱 Responsividade e Acessibilidade
+
+Garantir:
+
+Layout fluido
+
+Boa experiência em mobile
+
+Navegação acessível (aria-labels, alt nas imagens)
+
+Evitar imagens estouradas ou desalinhadas
+
+🧼 Boas práticas
+
+Código limpo e organizado
+
+Componentes reutilizáveis
+
+Separação clara de responsabilidades
+
+Comentários apenas quando necessário
+
+Manter padrão já existente no projeto
+
+✅ Resultado esperado
+
+Projetos com:
+
+Múltiplas imagens exibidas em carrossel
+
+Múltiplas skills associadas
+
+Interface moderna, responsiva e consistente
+
+Ícones de skills bem proporcionados, com fundo transparente
+
+Sistema escalável para futuras evolões
